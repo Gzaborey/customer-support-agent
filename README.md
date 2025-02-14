@@ -1,43 +1,33 @@
 # TeeCustomizer Ordering Assistant
 
-This project implements a chatbot interface for a LangGraph-based agent that guides users through a customized t-shirt ordering process.
+This project implements a chatbot interface for an agent that guides users through a customized t-shirt ordering process.
 
 ## Setup Instructions (Windows)
 
-0. **Create .env file and enter your OpeanAI API key into it**
+1. **Create .env file and enter your OpeanAI API key into it**
 
-```
-OPENAI_API_KEY=SOME_VALUE
-```
+```OPENAI_API_KEY=SOME_VALUE```
 
-1. **Create a Virtual Environment**
+2. **Create a Virtual Environment**
 
-   Open Command Prompt (or PowerShell) and run:
+Terminal:
 
-```
-   python -m venv .venv
-```
+```py -m venv .venv```
 
-2. **Activate the Virtual Environment**
+3. **Activate the Virtual Environment**
 
-Command Prompt:
+Terminal:
 
-```
-    .venv\Scripts\activate
-```
+```.venv\Scripts\activate```
 
-3. **Install Dependencies**
+4. **Install Dependencies**
 
 Ensure that you have a requirements.txt file in the project root, then run:
 
-```
-pip install -r requirements.txt
-```
+```pip install -r requirements.txt```
 
-4. **Run the Application**
+5. **Run the Application**
 
 Start the application by executing:
 
-```
-py app/main.py
-```
+```chainlit run main.py```
