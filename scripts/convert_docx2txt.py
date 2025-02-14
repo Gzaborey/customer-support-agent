@@ -1,4 +1,4 @@
-from common.utils import read_docx
+from app.common.utils import read_docx
 from pathlib import Path
 
 

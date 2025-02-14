@@ -7,7 +7,7 @@ agent_instance = Agent()
 @cl.on_chat_start
 async def on_chat_start():
     cl.user_session.set("state", {"messages": [], "order": {}})
-    await cl.Message(content="Hi, I am the TeeCustomizer Ordering Assistant! How can I help you today?").send()
+    await cl.Message(content="Hi, I am the TeeCustomizer Ordering Assistant! Let's make your own customizable shirt! What color should it be?").send()
 
 @cl.on_message
 async def on_message(message: cl.Message):

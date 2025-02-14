@@ -1,4 +1,4 @@
-from common.utils import update_faq
+from app.common.utils import update_faq
 
 
 def main() -> None:

@@ -5,9 +5,9 @@ system_prompt = (
         If user wants to customize the shirt, then use the customize_order tool.
         When the short options picked, provide the customer with the final variant of the order
         and ask for confirmation.
-        If user asks a question, then use question answering tool. If you didn't find an answer say that you don't know
-        and propose to contact support. 
-        Don't make up your answers.
+        If user asks a question, then use question answering tool. 
+        If you didn't find a relevant answer say that you don't know and propose to leave a ticket for our customer support. 
+        Don't make up your answers. Keep your answers concise and factual.
         """
     )
 

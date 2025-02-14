@@ -1,5 +1,4 @@
-from langchain_core.messages import SystemMessage
-from langchain_core.tools import tool
+from langchain_core.messages import SystemMessage, AIMessage
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import StateGraph, START, END
@@ -45,9 +44,20 @@ class Agent:
         return END
 
     def call_model(self, state: State):
+        # Check if it's the first interaction; add an initial welcome message.
+        if not state["messages"]:
+            state["messages"].append(
+                AIMessage(content="Hi, I am the TeeCustomizer Ordering Assistant! Let's make your own customizable shirt! What color should it be?")
+            )
+        
+        # Add the system prompt and the existing conversation messages.
         messages = [SystemMessage(content=system_prompt)] + state["messages"]
+        
+        # Call the language model.
         response = self.model.invoke(messages)
-        return {"messages": [response]}
+        
+        # Return the updated state with the response message.
+        return {"messages": state["messages"] + [response]}
     
     def run(self, input_state: dict, config: dict) -> dict:
         """

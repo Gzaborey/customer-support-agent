@@ -9,6 +9,7 @@ from langchain_openai import ChatOpenAI
 from app.prompts import summarizer_prompt
 from langchain_core.messages import HumanMessage, SystemMessage
 from app.config import LOGSDIR_PATH
+from datetime import datetime
 
 
 # Initialize models
@@ -26,9 +27,12 @@ def log_support_request(user_request: str) -> str:
     response = summarizer.invoke(summarization_input)
     summary = response.content if hasattr(response, "content") else "No summary produced."
 
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Log the summary along with the timestamp
     log_file = os.path.join(LOGSDIR_PATH, "support_logs.txt")
     with open(log_file, "a") as f:
-        f.write(summary + "\n")
+        f.write(f"[{timestamp}] - {summary}\n")
     
     return "Support request logged successfully."
 
