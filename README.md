@@ -5,6 +5,12 @@ This project implements a chatbot interface for an agent that guides users throu
 Demo can be temporarily accessible from here:
 http://16.16.173.120:8000/
 
+## Using Docker
+If you want to build the image with Docker, you should change the paths in the config.py file to:
+```CHROMADB_PATH = r"/app/chromadb"
+LOGSDIR_PATH = r"/app/logs"
+```
+
 ## Setup Instructions (Windows)
 
 1. **Create .env file and enter your OpeanAI API key into it**
