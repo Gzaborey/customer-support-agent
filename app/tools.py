@@ -54,11 +54,11 @@ def customize_order(attribute: str, value: str, state: Annotated[dict, InjectedS
     """
     
     if not is_valid_customization_attribute(attribute):
-        available_options = get_valid_shirt_attributes()
+        available_options = ",".join(get_valid_shirt_attributes())
         return f"Sorry, we don't have such an option. Available options for customization are {available_options}."
 
     if not is_valid_customization_attribute_value(attribute, value):
-        available_options = get_valid_shirt_attribute_values(attribute)
+        available_options = ",".join(get_valid_shirt_attribute_values(attribute))
         return f"Sorry, we don't have such an option. Available options for customizing the {attribute} are {available_options}."
 
     state["order"][attribute] = value

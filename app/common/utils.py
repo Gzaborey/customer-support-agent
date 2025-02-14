@@ -24,7 +24,7 @@ def is_valid_customization_attribute(attribute: str) -> bool:
     return True
 
 def is_valid_customization_attribute_value(attribute: str, value: str) -> bool:
-    if value not in get_valid_shirt_attribute_values(attribute) and attribute != "color":
+    if value not in get_valid_shirt_attribute_values(attribute):
         return False
     return True
 
@@ -103,8 +103,9 @@ def initialize_retriever(embedding_model="BAAI/llm-embedder",
         collection_name=collection_name,
         embedding_function=embedding_function,
         persist_directory=chromadb_path,
+        create_collection_if_not_exists=False
     )
-    retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
+    retriever = vector_store.as_retriever(search_type="mmr", search_kwargs={"k": 6}, lambda_mult=0)
     return retriever
 
 def read_docx(filepath: str) -> str:
