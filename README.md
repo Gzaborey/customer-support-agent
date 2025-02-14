@@ -2,6 +2,9 @@
 
 This project implements a chatbot interface for an agent that guides users through a customized t-shirt ordering process.
 
+Demo can be temporarily accessible from here:
+http://16.16.173.120:8000/
+
 ## Setup Instructions (Windows)
 
 1. **Create .env file and enter your OpeanAI API key into it**
