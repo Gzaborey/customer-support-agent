@@ -26,8 +26,8 @@ Q: How do I care for my custom t-shirt?
 A: We recommend washing your t-shirt inside out in cold water and tumble drying on low to preserve the print.
 Q: Can I order matching t-shirts for an event?
 A: Yes, you can design and order matching t-shirts for events, teams, and groups.
-Q: Do you offer kids' sizes?
-A: Yes, we offer a range of kids' sizes from 2T to XL.
+Q: Do you offer kids’ sizes?
+A: Yes, we offer a range of kids’ sizes from 2T to XL.
 Q: Are your materials eco-friendly?
 A: We offer eco-friendly options like organic cotton and recycled polyester.
 Q: Can I get assistance with my design?
@@ -38,13 +38,12 @@ Q: Do you ship internationally?
 A: Yes, we ship to most countries worldwide. Shipping times and rates may vary.
 Q: How can I contact customer support?
 A: You can reach customer support via email, phone, or live chat on our website.
-
 Q: Can I reorder a previous design?
 A: Yes, you can easily reorder previous designs by logging into your account and selecting from your order history.
 Q: Do you offer gift cards?
 A: Yes, we offer gift cards that can be purchased and used towards any custom t-shirt order.
 Q: Are there any special care instructions for eco-friendly materials?
-A: For eco-friendly materials like organic cotton, we recommend washing in cold water and hanging to dry to maintain the fabric's integrity.
+A: For eco-friendly materials like organic cotton, we recommend washing in cold water and hanging to dry to maintain the fabric’s integrity.
 Q: What is TeeCustomizer?
 A: TeeCustomizer is an online platform that allows users to design and order custom t-shirts. We cater to both individual customers and businesses, providing a range of printing options and high-quality materials.
 Q: How long has TeeCustomizer been in business?
@@ -62,7 +61,17 @@ A: Yes, expedited shipping options are available at an additional cost. Please s
 Q: Can I use multiple discount codes on a single order?
 A: No, only one discount code can be applied per order.
 Q: Do you offer design templates?
-A: Yes, we offer a variety of design templates to help you get started.
+A: Yes, we offer a variety of design templates to help you get started.Q: What are the available styles of t-shirts do you have?
+A: We have crew neck, v-neck, long sleeve, tank top
 
+Q: What are the available genders of t-shirts do you have?
+A: We have male, female, unisex
 
+Q: What are the available colors of t-shirts do you have?
+A: We have white, black, blue, red, green, custom colors
 
+Q: What are the available sizes of t-shirts do you have?
+A: We have xs, s, m, l, xl, xxl
+
+Q: What are the available printing options of t-shirts do you have?
+A: We have screen printing, embroidery, heat transfer, direct-to-garment

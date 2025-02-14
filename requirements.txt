@@ -1,0 +1,8 @@
+langchain
+langgraph
+chainlit
+langchain_huggingface
+langchain_openai
+docx2txt
+python-dotenv
+langchain_chroma
