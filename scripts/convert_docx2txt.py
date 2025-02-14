@@ -12,6 +12,9 @@ convert_dict = {CUSTOMIZATIONSDOCX_PATH: CUSTOMIZATIONSTXT_PATH,
                 FAQDOCX_PATH: FAQTXT_PATH}
 
 def main():
+    """
+    Script to convert initial .docx files to .txt files.
+    """
     for source, new in convert_dict.items():
         content = read_docx(source)
         with open(new, "w", encoding="utf-8-sig") as f:

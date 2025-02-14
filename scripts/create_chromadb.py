@@ -9,6 +9,9 @@ from app.config import CHROMADB_PATH
 FAQTXT_PATH = Path(r"data\processed\updated_faq_doc.txt")
 
 def main() -> None:
+    """
+    Script to create and populate Chroma vecor database.
+    """
     faq_data = parse_faq_file(FAQTXT_PATH)
 
     docs = []
