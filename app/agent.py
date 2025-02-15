@@ -2,11 +2,15 @@ from langchain_core.messages import SystemMessage, AIMessage
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import StateGraph, START, END
+from langgraph.graph.state import CompiledStateGraph
 from langgraph.prebuilt.chat_agent_executor import AgentState
 from langgraph.checkpoint.memory import MemorySaver
 from app.common.schemas import Shirt
-from app.tools import get_faq_info, customize_order, log_support_request
+from app.tools.customer_support import log_support_request
+from app.tools.faq import get_faq_info
+from app.tools.order_customization import customize_order, check_order_status
 from app.prompts import system_prompt
+from typing import Optional
 from app.common.utils import load_api_key
 
 
@@ -14,49 +18,60 @@ class State(AgentState):
     order: Shirt
 
 
+def build_tool_node(tools: list) -> ToolNode:
+    tools = tools
+    tool_node = ToolNode(tools)
+    return tool_node
+
+def initialize_model(api_key: str, tools: list, 
+                        model="gpt-4o-mini", temperature=0) -> ChatOpenAI:
+    model = ChatOpenAI(model=model,
+                        temperature=temperature,
+                        api_key=api_key).bind_tools(tools)
+    return model
+
+tools = [log_support_request, get_faq_info, customize_order, check_order_status]
+tool_node = build_tool_node(tools)
+model = initialize_model(api_key=load_api_key(), tools=tools)
+
 class Agent:
     def __init__(self):
-        self.api_key = load_api_key()
+        self.agent = self._build_agent(tool_node)
+
+    def _build_agent(self, tool_node: ToolNode) -> CompiledStateGraph:
+        workflow = StateGraph(state_schema=State)
         
-        self.tools = [customize_order, get_faq_info, log_support_request]
-        self.tool_node = ToolNode(self.tools)
+        workflow.add_node("agent", self._call_model)
+        workflow.add_node("tools", tool_node)
         
-        self.model = ChatOpenAI(model="gpt-4o-mini", temperature=0).bind_tools(self.tools)
+        workflow.add_edge(START, "agent")
+        workflow.add_conditional_edges("agent",
+                                            self._should_continue,
+                                            ["tools", END])
+        workflow.add_edge("tools", "agent")
         
-        self.workflow = StateGraph(state_schema=State)
-        
-        self.workflow.add_node("agent", self.call_model)
-        self.workflow.add_node("tools", self.tool_node)
-        
-        self.workflow.add_edge(START, "agent")
-        self.workflow.add_conditional_edges("agent", self.should_continue, ["tools", END])
-        self.workflow.add_edge("tools", "agent")
-        
-        self.memory = MemorySaver()
-        
-        self.agent = self.workflow.compile(checkpointer=self.memory)
+        memory = MemorySaver()
+        agent = workflow.compile(checkpointer=memory)
+        return agent
+
+ 
     
-    def should_continue(self, state: State):
+    def _should_continue(self, state: State):
         messages = state["messages"]
         last_message = messages[-1]
         if last_message.tool_calls:
             return "tools"
         return END
 
-    def call_model(self, state: State):
+    def _call_model(self, state: State):
         # Check if it's the first interaction; add an initial welcome message.
         if not state["messages"]:
             state["messages"].append(
-                AIMessage(content="Hi, I am the TeeCustomizer Ordering Assistant! Let's make your own customizable shirt! What color should it be?")
-            )
+                AIMessage(content=("Hi, I am the TeeCustomizer Ordering Assistant! Let's make your own customizable shirt! What color should it be?"))
+                )
         
-        # Add the system prompt and the existing conversation messages.
         messages = [SystemMessage(content=system_prompt)] + state["messages"]
-        
-        # Call the language model.
-        response = self.model.invoke(messages)
-        
-        # Return the updated state with the response message.
+        response = model.invoke(messages)
         return {"messages": state["messages"] + [response]}
     
     def run(self, input_state: dict, config: dict) -> dict:
