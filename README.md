@@ -7,7 +7,8 @@ http://13.53.138.137:8000/
 
 ## Using Docker
 If you want to build the image with Docker, you should change the paths in the config.py file to:
-```CHROMADB_PATH = r"/app/chromadb"
+```
+CHROMADB_PATH = r"/app/chromadb"
 LOGSDIR_PATH = r"/app/logs"
 ```
 
