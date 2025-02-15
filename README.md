@@ -2,8 +2,8 @@
 
 This project implements a chatbot interface for an agent that guides users through a customized t-shirt ordering process.
 
-Demo can be temporarily accessible from here:
-http://16.16.173.120:8000/
+The demo can be temporarily accessible from here:
+http://13.53.138.137:8000/
 
 ## Using Docker
 If you want to build the image with Docker, you should change the paths in the config.py file to:
