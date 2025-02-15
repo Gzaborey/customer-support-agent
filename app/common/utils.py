@@ -2,11 +2,11 @@ import re
 from dotenv import load_dotenv
 import os
 import docx2txt
-from app.common.schemas import Shirt
 from typing import get_type_hints, get_args
 from app.config import CHROMADB_PATH
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
+from app.common.schemas import Shirt
 
     
 def get_valid_shirt_attributes() -> list[str]:
@@ -19,14 +19,10 @@ def get_valid_shirt_attribute_values(attribute: str) -> list[str]:
         raise ValueError(f"The attribute is invalid. Error: {e}")
 
 def is_valid_customization_attribute(attribute: str) -> bool:
-    if attribute not in get_valid_shirt_attributes():
-        return False
-    return True
+    return attribute in get_valid_shirt_attributes()
 
 def is_valid_customization_attribute_value(attribute: str, value: str) -> bool:
-    if value not in get_valid_shirt_attribute_values(attribute):
-        return False
-    return True
+    return value in get_valid_shirt_attribute_values(attribute)
 
 def parse_faq_file(filepath: str) -> list[str]:
     with open(filepath, "r", encoding="utf-8-sig") as f:
@@ -61,7 +57,7 @@ def parse_customizations_file(filepath: str) -> dict[str, list[str]]:
                 if ',' in v:
                     new_values.extend([x.strip() for x in v.split(",")])
                 else:
-                    new_values.append()
+                    new_values.append(v)
             values = new_values
         customizations[category] = values
     return customizations
@@ -89,14 +85,14 @@ def update_faq(faq_filepath: str, customizations_filepath: str, updated_faq_file
     with open(updated_faq_filepath, "w", encoding="utf-8-sig") as f:
         f.write(updated_faq_data)
 
-def load_api_key():
+def load_api_key() -> str:
     load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     return api_key
 
 def initialize_retriever(embedding_model="BAAI/llm-embedder",
                          chromadb_path=CHROMADB_PATH,
-                         collection_name="faq_collection"):
+                         collection_name="faq_collection") -> HuggingFaceEmbeddings:
     embedding_function = HuggingFaceEmbeddings(model_name=embedding_model)
 
     vector_store = Chroma(
@@ -117,3 +113,6 @@ def read_docx(filepath: str) -> str:
         lines.append(line.strip())
     processed_text = "\n".join(lines)
     return processed_text
+
+def create_new_shirt() -> Shirt:
+    return {attribute: None for attribute in get_valid_shirt_attributes()}

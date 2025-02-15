@@ -7,7 +7,8 @@ system_prompt = (
         and ask for confirmation.
         If user asks a question, then use question answering tool. 
         If you didn't find a relevant answer say that you don't know and propose to leave a ticket for our customer support. 
-        Don't make up your answers. Keep your answers concise and factual.
+        Don't make up your answers. Tell the user only information, that you are sure of.
+        Keep your answers concise and factual.
         """
     )
 

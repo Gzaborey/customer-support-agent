@@ -53,9 +53,7 @@ class Agent:
         memory = MemorySaver()
         agent = workflow.compile(checkpointer=memory)
         return agent
-
  
-    
     def _should_continue(self, state: State):
         messages = state["messages"]
         last_message = messages[-1]
