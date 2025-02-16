@@ -15,19 +15,20 @@ from datetime import datetime
 summarizer = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 @tool
-def log_support_request(user_request: str) -> str:
+def log_support_request(user_request: str, state: Annotated[dict, InjectedState]) -> str:
     """
     Extract key details from the user request and log them.
     """
     summarization_input = [SystemMessage(content=summarizer_prompt), HumanMessage(content=user_request)]
 
     response = summarizer.invoke(summarization_input)
+
+    user_id = state["id"]
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     summary = response.content if hasattr(response, "content") else "No summary produced."
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
     log_file = os.path.join(LOGSDIR_PATH, "support_logs.txt")
     with open(log_file, "a") as f:
-        f.write(f"[{timestamp}] - {summary}\n")
+        f.write(f"{user_id} - [{timestamp}] - {summary}\n")
     
     return "Support request logged successfully."
