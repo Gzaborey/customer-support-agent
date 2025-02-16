@@ -80,7 +80,7 @@ def update_faq(faq_filepath: str, customizations_filepath: str, updated_faq_file
 
     new_faq_entries = generate_customizations_faq_entry(customizations_filepath)
 
-    updated_faq_data = faq_data + "\n".join(new_faq_entries)
+    updated_faq_data = faq_data + "\n" + "\n".join(new_faq_entries)
     
     with open(updated_faq_filepath, "w", encoding="utf-8-sig") as f:
         f.write(updated_faq_data)
