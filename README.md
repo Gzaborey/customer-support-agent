@@ -5,13 +5,35 @@ This project implements a chatbot interface for an agent that guides users throu
 The demo can be temporarily accessible from here:
 http://13.53.138.137:8000/
 
+## Project Structure
+
+### Directories Overview
+
+- **`app`**  
+  Contains code related to the assistant logic.
+
+- **`chroma db`**  
+  A vector database with FAQ documents.
+
+- **`data`**  
+  Contains raw and processed FAQ and customization info data.
+
+- **`logs`**  
+  Contains logged support system messages.
+
+- **`scripts`**  
+  Contains scripts for performing particular tasks (e.g., updating the FAQ file, etc.).
+
 ## Using Docker
 If you want to build the image with Docker, you should change the paths in the config.py file to:
-```CHROMADB_PATH = r"/app/chromadb"
+```
+CHROMADB_PATH = r"/app/chromadb"
 LOGSDIR_PATH = r"/app/logs"
 ```
 
 ## Setup Instructions (Windows)
+
+Have been tested against Python 3.11.
 
 1. **Create .env file and enter your OpeanAI API key into it**
 
