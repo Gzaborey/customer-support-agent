@@ -26,6 +26,9 @@ def customize_order(attribute: str, value: str, state: Annotated[dict, InjectedS
     Updates a T-shirt customization based on the provided customization request.
     Checks if there are remaining attributes to choose and guides the user accordingly.
     """
+    attribute = attribute.lower()
+    value = value.lower()
+    
     if not is_valid_customization_attribute(attribute):
         available_options = ",".join(get_valid_shirt_attributes())
         return f"Sorry, we don't have such an option. Available options for customization are {available_options}."
@@ -58,6 +61,9 @@ def customize_order(attribute: str, value: str, state: Annotated[dict, InjectedS
 def check_order_status(state: Annotated[dict, InjectedState]) -> str:
     """
     Checks the status of the shirt customization order.
+
+    Returns: 
+    A string with the current status of the user's order.
     """
     return get_current_shirt_specifications(state)
 

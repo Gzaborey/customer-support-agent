@@ -10,13 +10,21 @@ from app.tools.customer_support import log_support_request
 from app.tools.faq import get_faq_info
 from app.tools.order_customization import customize_order, check_order_status
 from app.prompts import system_prompt
-from typing import Optional
-from app.common.utils import load_api_key
+from app.common.utils import load_api_key, create_new_shirt
+from uuid import uuid4
 
 
 class State(AgentState):
     order: Shirt
+    id: str
 
+def create_agent_state() -> State:
+    state = State()
+
+    state["messages"] = []
+    state["order"] = create_new_shirt()
+    state["id"] = str(uuid4())
+    return state
 
 def build_tool_node(tools: list) -> ToolNode:
     tools = tools

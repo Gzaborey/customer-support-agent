@@ -9,8 +9,3 @@ class Shirt(TypedDict):
     printing_options: Literal["screen_printing", "embroidery",
                               "heat_transfer", "direct_to_garment"]
     style: Literal["crew_neck", "v-neck", "long_sleeve", "tank_top"]
-
-class Customer(TypedDict):
-    name: Optional[str]
-    surname: Optional[str]
-    id: str
