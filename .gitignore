@@ -1,6 +1,5 @@
 .venv
 __pycache__
-.env
 RAG_agent.egg-info
 notebooks
 chainlit.md

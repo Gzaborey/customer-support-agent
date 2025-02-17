@@ -35,7 +35,7 @@ LOGSDIR_PATH = r"/app/logs"
 
 Have been tested against Python 3.11.
 
-1. **Create .env file and enter your OpeanAI API key into it**
+1. **Edit the .env file, enter your OpeanAI API key**
 
 ```OPENAI_API_KEY=SOME_VALUE```
 
