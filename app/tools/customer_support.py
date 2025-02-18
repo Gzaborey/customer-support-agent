@@ -1,9 +1,6 @@
-from app.common.utils import initialize_retriever
 from langchain_core.tools import tool
 from langgraph.prebuilt import InjectedState
-from app.common.utils import is_valid_customization_attribute, is_valid_customization_attribute_value, get_valid_shirt_attributes, get_valid_shirt_attribute_values
 from typing import Annotated
-import random
 import os
 from langchain_openai import ChatOpenAI
 from app.prompts import summarizer_prompt

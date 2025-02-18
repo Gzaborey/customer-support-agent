@@ -19,3 +19,9 @@ summarizer_prompt = (
         Keep it concise and factual."
         """
     )
+
+initial_agent_message = (
+    "Hi, I am the TeeCustomizer Ordering Assistant!"
+    "Let's make your own customizable shirt!"
+    "What color should it be?"
+    )

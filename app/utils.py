@@ -2,11 +2,15 @@ import re
 from dotenv import load_dotenv
 import os
 import docx2txt
+from prompts import system_prompt, initial_agent_message
+from langchain_core.messages import AIMessage, SystemMessage
 from typing import get_type_hints, get_args
 from app.config import CHROMADB_PATH
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
-from app.common.schemas import Shirt
+from app.schemas import Shirt, CustomerSupportAgentState
+from uuid import uuid4
+from typing import Union, List
 
     
 def get_valid_shirt_attributes() -> list[str]:
@@ -116,3 +120,25 @@ def read_docx(filepath: str) -> str:
 
 def create_new_shirt() -> Shirt:
     return {attribute: None for attribute in get_valid_shirt_attributes()}
+
+def create_user_id() -> str:
+    return str(uuid4())
+
+def create_initial_message_history(
+        system_prompt: str = system_prompt,
+        initial_agent_message: str = initial_agent_message
+        ) -> List[Union[SystemMessage, AIMessage]]:
+    new_message_history = [SystemMessage(content=system_prompt),
+                           AIMessage(content=initial_agent_message)]
+    return new_message_history
+
+def create_new_agent_state() -> CustomerSupportAgentState:
+    state = CustomerSupportAgentState()
+
+    state["messages"] = create_initial_message_history(
+        system_prompt=system_prompt,
+        initial_agent_message=initial_agent_message
+        )
+    state["order"] = create_new_shirt()
+    state["id"] = create_user_id()
+    return state

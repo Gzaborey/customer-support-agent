@@ -1,5 +1,5 @@
 from langchain_core.tools import tool
-from app.common.utils import initialize_retriever
+from app.utils import initialize_retriever
 
 
 retriever = initialize_retriever()
