@@ -3,26 +3,24 @@ from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
-from app.schemas import CustomerSupportAgentState
+from chatbot.schemas import CustomerSupportAgentState
 from typing import Union, Any, List, Optional
-from exceptions import InvalidMessageHistory
+from chatbot.exceptions import InvalidMessageHistory
 
 
 class CustomerSupportAgent:
     def __init__(
             self,
             model: Union[ChatOpenAI, Any],
-            state_schema: CustomerSupportAgentState,
             tools: List[Tool],
             memory: Optional[MemorySaver] = None
             ) -> None:
         self.model = model
-        self.state_schema = state_schema
         self.tools = tools
         self.memory = memory
 
     def compile_agent(self) -> None:
-        workflow = StateGraph(state_schema=self.state_schema)
+        workflow = StateGraph(state_schema=CustomerSupportAgentState)
 
         self.model = self.model.bind_tools(self.tools)
         tool_node = ToolNode(self.tools)
@@ -50,7 +48,7 @@ class CustomerSupportAgent:
         
         response = self.model.invoke(message_history)
 
-        updated_message_history = message_history.append(response)
+        updated_message_history = message_history + [response]
         state["messages"] = updated_message_history
         return state
     

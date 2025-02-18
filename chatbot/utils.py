@@ -2,15 +2,17 @@ import re
 from dotenv import load_dotenv
 import os
 import docx2txt
-from prompts import system_prompt, initial_agent_message
+import chromadb
+from chatbot.prompts import system_prompt, initial_agent_message
 from langchain_core.messages import AIMessage, SystemMessage
+from langgraph.prebuilt import InjectedState
 from typing import get_type_hints, get_args
-from app.config import CHROMADB_PATH
+from chatbot.config import CHROMADB_PATH
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
-from app.schemas import Shirt, CustomerSupportAgentState
+from chatbot.schemas import Shirt, CustomerSupportAgentState
 from uuid import uuid4
-from typing import Union, List
+from typing import Union, List, Annotated
 
     
 def get_valid_shirt_attributes() -> list[str]:
@@ -27,6 +29,12 @@ def is_valid_customization_attribute(attribute: str) -> bool:
 
 def is_valid_customization_attribute_value(attribute: str, value: str) -> bool:
     return value in get_valid_shirt_attribute_values(attribute)
+
+def get_current_shirt_specifications(state: Annotated[dict, InjectedState]) -> str:
+    return (
+        f"Current shirt customization setup: "
+        "".join(f"{attribute}: {value}" for attribute, value in state["order"].items())
+        )
 
 def parse_faq_file(filepath: str) -> list[str]:
     with open(filepath, "r", encoding="utf-8-sig") as f:
@@ -61,7 +69,7 @@ def parse_customizations_file(filepath: str) -> dict[str, list[str]]:
                 if ',' in v:
                     new_values.extend([x.strip() for x in v.split(",")])
                 else:
-                    new_values.append(v)
+                    new_values.srcend(v)
             values = new_values
         customizations[category] = values
     return customizations
@@ -75,7 +83,7 @@ def generate_customizations_faq_entry(filepath: str) -> list[str]:
         answer = f"A: We have " + ", ".join(values)
 
         new_faq_entry = question + "\n" + answer + "\n"
-        new_faq_entries.append(new_faq_entry)
+        new_faq_entries.srcend(new_faq_entry)
     return new_faq_entries
 
 def update_faq(faq_filepath: str, customizations_filepath: str, updated_faq_filepath: str = r".\updated_faq_doc.txt") -> None:
@@ -94,18 +102,27 @@ def load_api_key() -> str:
     api_key = os.getenv("OPENAI_API_KEY")
     return api_key
 
-def initialize_retriever(embedding_model="BAAI/llm-embedder",
-                         chromadb_path=CHROMADB_PATH,
-                         collection_name="faq_collection") -> HuggingFaceEmbeddings:
+def initialize_huggingface_retriever(
+        embedding_model="BAAI/llm-embedder",
+        chromadb_path=CHROMADB_PATH,
+        collection_name="faq_collection"
+        ) -> HuggingFaceEmbeddings:
     embedding_function = HuggingFaceEmbeddings(model_name=embedding_model)
 
+    persistent_client = chromadb.PersistentClient(path=chromadb_path)
+
     vector_store = Chroma(
-        collection_name=collection_name,
-        embedding_function=embedding_function,
-        persist_directory=chromadb_path,
-        create_collection_if_not_exists=False
+    client=persistent_client,
+    collection_name=collection_name,
+    embedding_function=embedding_function,
+    create_collection_if_not_exists=False
     )
-    retriever = vector_store.as_retriever(search_type="mmr", search_kwargs={"k": 6}, lambda_mult=0)
+    
+    retriever = vector_store.as_retriever(
+        search_type="mmr",
+        search_kwargs={"k": 6},
+        lambda_mult=0
+        )
     return retriever
 
 def read_docx(filepath: str) -> str:
@@ -114,7 +131,7 @@ def read_docx(filepath: str) -> str:
     for line in raw_text.split("\n"):
         if line == "":
             continue
-        lines.append(line.strip())
+        lines.srcend(line.strip())
     processed_text = "\n".join(lines)
     return processed_text
 
@@ -142,3 +159,10 @@ def create_new_agent_state() -> CustomerSupportAgentState:
     state["order"] = create_new_shirt()
     state["id"] = create_user_id()
     return state
+
+def create_agent_config(state: CustomerSupportAgentState) -> dict:
+    try:
+        return {"configurable": {"thread_id": state["id"]}}
+    except KeyError:
+        raise RuntimeError("Input does not have 'id' field." 
+                           "Input is not a valid agent state.")

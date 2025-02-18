@@ -1,8 +1,8 @@
 from langchain_core.tools import tool
-from app.utils import initialize_retriever
+from chatbot.utils import initialize_huggingface_retriever
 
 
-retriever = initialize_retriever()
+retriever = initialize_huggingface_retriever()
 
 @tool
 def get_faq_info(query: str) -> str:
