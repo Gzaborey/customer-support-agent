@@ -9,10 +9,10 @@ http://13.60.172.244:8000/
 
 ### Directories Overview
 
-- **`app`**  
+- **`chatbot`**  
   Contains code related to the assistant logic.
 
-- **`chroma db`**  
+- **`chromadb`**  
   A vector database with FAQ documents.
 
 - **`data`**  
@@ -61,7 +61,7 @@ Ensure that you have a requirements.txt file in the project root, then run:
 
 Start the application by executing:
 
-```chainlit run main.py```
+```chainlit run app.py```
 
 ## Next Steps to Implement
 

@@ -1,0 +1,2 @@
+class InvalidMessageHistory(Exception):
+    pass
