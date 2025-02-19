@@ -1,7 +1,6 @@
 .venv
 __pycache__
 RAG_agent.egg-info
-notebooks
 chainlit.md
 .chainlit
 setup.py
