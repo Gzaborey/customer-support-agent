@@ -62,6 +62,9 @@ Q: Can I use multiple discount codes on a single order?
 A: No, only one discount code can be applied per order.
 Q: Do you offer design templates?
 A: Yes, we offer a variety of design templates to help you get started.
+Q: What are the available customization options of t-shirts do you have?
+A: We have styles, genders, colors, sizes, printing options
+
 Q: What are the available styles of t-shirts do you have?
 A: We have crew neck, v-neck, long sleeve, tank top
 
