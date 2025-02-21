@@ -4,7 +4,7 @@ from typing import Annotated
 import os
 from langchain_openai import ChatOpenAI
 from chatbot.prompts import summarizer_prompt
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from chatbot.config import LOGSDIR_PATH
 from datetime import datetime
 
@@ -12,12 +12,21 @@ from datetime import datetime
 summarizer = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 @tool
-def log_support_request(user_request: str, state: Annotated[dict, InjectedState]) -> str:
+def log_support_request(state: Annotated[dict, InjectedState]) -> str:
     """
     Use this tool if a customer needs to leave a message to support team.
     Extract key details from the user request and log them. 
     """
-    summarization_input = [SystemMessage(content=summarizer_prompt), HumanMessage(content=user_request)]
+    relevant_messages = [message.content for message in state["messages"][:-5] 
+                         if isinstance(message, HumanMessage) or isinstance(message, AIMessage)]
+
+    # Leave only 5 last messages
+    if len(relevant_messages) < 4:
+        chosen_messages = relevant_messages
+    else:
+
+        chosen_messages = relevant_messages[-5:]
+    summarization_input = [SystemMessage(content=summarizer_prompt)] + chosen_messages
 
     response = summarizer.invoke(summarization_input)
 
