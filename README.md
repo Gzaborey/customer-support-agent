@@ -21,8 +21,8 @@ http://13.60.172.244:8000/
 - **`logs`**  
   Contains logged support system messages.
 
-- **`scripts`**  
-  Contains scripts for performing particular tasks (e.g., updating the FAQ file, etc.).
+- **`notebooks`**  
+  Contains notebooks for particular tasks (e.g., updating the FAQ file, etc.).
 
 ## Using Docker
 If you want to build the image with Docker, you should change the paths in the config.py file to:
