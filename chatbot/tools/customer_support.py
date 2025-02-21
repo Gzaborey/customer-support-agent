@@ -20,12 +20,12 @@ def log_support_request(state: Annotated[dict, InjectedState]) -> str:
     relevant_messages = [message.content for message in state["messages"][:-5] 
                          if isinstance(message, HumanMessage) or isinstance(message, AIMessage)]
 
-    # Leave only 5 last messages
+    # Leave only 4 last messages
     if len(relevant_messages) < 4:
         chosen_messages = relevant_messages
     else:
 
-        chosen_messages = relevant_messages[-5:]
+        chosen_messages = relevant_messages[-4:]
     summarization_input = [SystemMessage(content=summarizer_prompt)] + chosen_messages
 
     response = summarizer.invoke(summarization_input)
