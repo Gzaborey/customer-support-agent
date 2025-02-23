@@ -17,18 +17,26 @@ def log_support_request(state: Annotated[dict, InjectedState]) -> str:
     Use this tool if a customer needs to leave a message to support team.
     Extract key details from the user request and log them. 
     """
-    relevant_messages = [message.content for message in state["messages"][:-5] 
-                         if isinstance(message, HumanMessage) or isinstance(message, AIMessage)]
+    # Extract message history
+    message_history = state["messages"]
 
-    # Leave only 5 last messages
-    if len(relevant_messages) < 4:
-        chosen_messages = relevant_messages
+    # Trim the message history
+    if len(message_history) > 10:
+        message_history = message_history[-10:]
     else:
+        message_history = message_history
 
-        chosen_messages = relevant_messages[-5:]
-    summarization_input = [SystemMessage(content=summarizer_prompt)] + chosen_messages
+    # Leave only Human and AI messages with their message content
+    filtered_message_history = []
 
-    response = summarizer.invoke(summarization_input)
+    for message in message_history:
+        if isinstance(message, HumanMessage):
+            filtered_message_history.append(HumanMessage(content=message.content))
+        elif isinstance(message, AIMessage):
+            filtered_message_history.append(AIMessage(content=message.content))
+    
+    summarizer_input = [SystemMessage(content=summarizer_prompt)] + filtered_message_history
+    response = summarizer.invoke(summarizer_input)
 
     user_id = state["id"]
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

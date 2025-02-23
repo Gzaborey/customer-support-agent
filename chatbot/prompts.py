@@ -19,6 +19,7 @@ summarizer_prompt = (
         """
         Summarize the main issue or request from the following user messages in one sentence.
         Prioritize the information that didn't recieve a proper answer from the system.
+        The result should have the reason why the user wants to contact support team.
         Keep it concise and factual."
         """
     )
