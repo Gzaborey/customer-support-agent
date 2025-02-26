@@ -2,8 +2,6 @@
 
 This project implements a chatbot interface for an agent that guides users through a customized t-shirt ordering process.
 
-The demo can be temporarily accessible from here:
-http://13.60.172.244:8000/
 
 ## Project Structure
 
